@@ -66,7 +66,6 @@ extension UIImage {
 class EditVC: UIViewController {
 
 	private let alignTitle: [photoAlign] = [.middle, .xmiddle, .ymiddle, .top, .bottom, .left, .right]
-	
 	private let colorTitle: [backgroundColor] = [.black, .white, .pink, .lightpink, .lightpurple, .lightgray, .none]
 	
 	@IBOutlet private var vContainer: UIView!
@@ -74,11 +73,13 @@ class EditVC: UIViewController {
 	@IBOutlet private var vBottomBar: UIView!
 	@IBOutlet private var vBackground: UIView!
 	@IBOutlet private var svScrollview: UIScrollView!
-	
 	@IBOutlet private var lcsvScrollviewHeight: NSLayoutConstraint!
 	
 	private var isNavigationHidden = false {
 		didSet {
+			
+			seletedSubMenuIndex = -1
+			
 			if isNavigationHidden {
 				navigationbarWillHidden()
 			} else {
@@ -89,12 +90,18 @@ class EditVC: UIViewController {
 
 	private var selectedIvImage: UIImageView? {
 		didSet {
+			guard oldValue != selectedIvImage else {
+				return
+			}
+			
+			ivs.forEach({ iv in
+				iv.layer.borderColor = UIColor.clear.cgColor
+				iv.layer.borderWidth = 0
+			})
+			
 			if let iv = selectedIvImage {
 				iv.layer.borderColor = UIColor.blue.cgColor
 				iv.layer.borderWidth = 2.0
-			} else {
-				oldValue?.layer.borderColor = UIColor.clear.cgColor
-				oldValue?.layer.borderWidth = 0
 			}
 		}
 	}
@@ -110,9 +117,10 @@ class EditVC: UIViewController {
 	private var vAlignOption: UIView!
 	private var vColorOption: UIView!
 	private var imageLastScale = [UIImageView: CGFloat]()
+	private var ivs = [UIImageView]()
+	private var isPinching = false
 	
 	var images = [UIImage]()
-	private var iv = [UIImageView]()
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,16 +166,16 @@ class EditVC: UIViewController {
 			ivOrigin.y = vContainer.frame.midY - ivSize.height/2
 			
 			
-			let ivs = UIImageView(frame: CGRect(origin: ivOrigin,
+			let iv = UIImageView(frame: CGRect(origin: ivOrigin,
 												size: ivSize))
-			ivs.image = image
-			ivs.isUserInteractionEnabled = true
-			iv.append(ivs)
+			iv.image = image
+			iv.isUserInteractionEnabled = true
+			ivs.append(iv)
 			
-			vContainer.insertSubview(ivs, aboveSubview: vBackground)
+			vContainer.insertSubview(iv, aboveSubview: vBackground)
 		})
 		
-		selectedIvImage = iv.last
+		selectedIvImage = ivs.last
 		
 		vAlignOption = UIView()
 		alignTitle.forEach({
@@ -336,8 +344,7 @@ class EditVC: UIViewController {
 			return
 		}
 		
-		sender.isSelected = !sender.isSelected
-		seletedSubMenuIndex = sender.isSelected ? 1 : -1
+		seletedSubMenuIndex = seletedSubMenuIndex == 1 ? -1 : 1
 		
 		vColorOption.removeFromSuperview()
 		svScrollview.addSubview(vAlignOption)
@@ -391,8 +398,7 @@ class EditVC: UIViewController {
 	
 	// 배경색메뉴 터치시 서브 메뉴 보여짐
 	@IBAction func onBtnColorDidTouch(_ sender: UIButton) {
-		sender.isSelected = !sender.isSelected
-		seletedSubMenuIndex = sender.isSelected ? 2 : -1
+		seletedSubMenuIndex = seletedSubMenuIndex == 2 ? -1 : 2
 		
 		vAlignOption.removeFromSuperview()
 		svScrollview.addSubview(vColorOption)
@@ -431,11 +437,14 @@ class EditVC: UIViewController {
 		
 		switch gesture.state {
 		case .began:
+			isPinching = true
+			
 			guard imageLastScale[iv] == nil else {
 				return
 			}
 			imageLastScale[iv] = 1.0
 		case .changed:
+			isPinching = true
 			if let lastScale = imageLastScale[iv] {
 				let minScale: CGFloat = 0.05
 				var newScale = lastScale + (gesture.scale - 1.0) //1.0 - (lastScale - gesture.scale)
@@ -447,29 +456,35 @@ class EditVC: UIViewController {
 				})
 			}
 		case .ended:
+			
 			imageLastScale[iv] = iv.transform.a
+			isPinching = false
 		default: break
 		}
 	}
 	
 	// 사진 저장
 	@IBAction private func userWillSavePhoto(_ sender: UIButton) {
-		let image = UIImage(view: vContainer)
+		selectedIvImage?.layer.borderColor = UIColor.clear.cgColor
 		
+		let image = UIImage(view: vContainer)
 		UIImageWriteToSavedPhotosAlbum(image, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+		
+		selectedIvImage?.layer.borderColor = UIColor.blue.cgColor
 	}
 	
 	// 앨범 저장 콜백
 	@objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
 		if let error = error {
 			// we got back an error!
-			let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
-			ac.addAction(UIAlertAction(title: "OK", style: .default))
+			let ac = UIAlertController(title: "저장 에러 ^ㅠ^", message: error.localizedDescription, preferredStyle: .alert)
+			ac.addAction(UIAlertAction(title: "확인", style: .default))
 			present(ac, animated: true)
 		} else {
-			let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
-			ac.addAction(UIAlertAction(title: "OK", style: .default))
-			present(ac, animated: true)
+			let finishVC = FinishVC(nibName: "FinishVC", bundle: Bundle.main)
+			finishVC.image = image
+
+			self.navigationController?.pushViewController(finishVC, animated: true)
 		}
 	}
 	
@@ -506,20 +521,23 @@ class EditVC: UIViewController {
 		
 		// 컨테이너 뷰를 터치시 상단 하단 바가 사라짐
 		guard touchView == vBackground else {
-			if touchView is UIImageView {
-				selectedIvImage = touchView as? UIImageView
+			// 이미지 뷰를 터치시 해당 이미지 뷰 셀렉 상태
+			if touchView is UIImageView, let touchIv = touchView as? UIImageView {
+				selectedIvImage = touchIv
 				seletedPriviousMovePoint = touch.location(in: touchView)
 			}
 			return
 		}
 		
 		selectedIvImage = nil
+		seletedPriviousMovePoint = nil
 		isNavigationHidden = !isNavigationHidden
 	}
 	
 	override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
 		// 이미지 뷰 중심 이동
-		guard let touch = touches.first,
+		guard !isPinching,
+			let touch = touches.first,
 			let touchView = touch.view,
 			let iv = selectedIvImage,
 			touchView == iv,
@@ -536,7 +554,7 @@ class EditVC: UIViewController {
 		var ivOrigin = CGPoint()
 		ivOrigin.x = iv.frame.origin.x + xMovement
 		ivOrigin.y = iv.frame.origin.y + yMovement
-		
+
 		UIView.animate(withDuration: 0.1,
 					   animations: {
 						self.selectedIvImage?.frame.origin = ivOrigin

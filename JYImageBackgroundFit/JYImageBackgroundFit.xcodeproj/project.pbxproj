@@ -14,6 +14,9 @@
 		037E520320A130DB0086299E /* MainVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037E520120A130DB0086299E /* MainVC.xib */; };
 		037E520620A13AC70086299E /* EditVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037E520420A13AC70086299E /* EditVC.swift */; };
 		037E520720A13AC70086299E /* EditVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037E520520A13AC70086299E /* EditVC.xib */; };
+		037E520E20A2D8070086299E /* FinishVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 037E520C20A2D8070086299E /* FinishVC.swift */; };
+		037E520F20A2D8070086299E /* FinishVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 037E520D20A2D8070086299E /* FinishVC.xib */; };
+		295F08FC0823E464F4B0F706 /* Pods_JYImageBackgroundFit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08275B6EB1D1B290335E2B6A /* Pods_JYImageBackgroundFit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,11 @@
 		037E520120A130DB0086299E /* MainVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainVC.xib; sourceTree = "<group>"; };
 		037E520420A13AC70086299E /* EditVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditVC.swift; sourceTree = "<group>"; };
 		037E520520A13AC70086299E /* EditVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EditVC.xib; sourceTree = "<group>"; };
+		037E520C20A2D8070086299E /* FinishVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinishVC.swift; sourceTree = "<group>"; };
+		037E520D20A2D8070086299E /* FinishVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FinishVC.xib; sourceTree = "<group>"; };
+		08275B6EB1D1B290335E2B6A /* Pods_JYImageBackgroundFit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JYImageBackgroundFit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		3542FB3C833EE013781F3A94 /* Pods-JYImageBackgroundFit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JYImageBackgroundFit.release.xcconfig"; path = "Pods/Target Support Files/Pods-JYImageBackgroundFit/Pods-JYImageBackgroundFit.release.xcconfig"; sourceTree = "<group>"; };
+		3B0841AA180E620AF8555AF0 /* Pods-JYImageBackgroundFit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JYImageBackgroundFit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JYImageBackgroundFit/Pods-JYImageBackgroundFit.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				295F08FC0823E464F4B0F706 /* Pods_JYImageBackgroundFit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -44,6 +53,8 @@
 			children = (
 				0320F80C20A12B240014A2F1 /* JYImageBackgroundFit */,
 				0320F80B20A12B240014A2F1 /* Products */,
+				D20B9D94D873D368A2B27C71 /* Pods */,
+				A15DB2983F3B5B3037599135 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -66,8 +77,27 @@
 				037E520120A130DB0086299E /* MainVC.xib */,
 				037E520420A13AC70086299E /* EditVC.swift */,
 				037E520520A13AC70086299E /* EditVC.xib */,
+				037E520C20A2D8070086299E /* FinishVC.swift */,
+				037E520D20A2D8070086299E /* FinishVC.xib */,
 			);
 			path = JYImageBackgroundFit;
+			sourceTree = "<group>";
+		};
+		A15DB2983F3B5B3037599135 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				08275B6EB1D1B290335E2B6A /* Pods_JYImageBackgroundFit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D20B9D94D873D368A2B27C71 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3B0841AA180E620AF8555AF0 /* Pods-JYImageBackgroundFit.debug.xcconfig */,
+				3542FB3C833EE013781F3A94 /* Pods-JYImageBackgroundFit.release.xcconfig */,
+			);
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -77,9 +107,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0320F81C20A12B260014A2F1 /* Build configuration list for PBXNativeTarget "JYImageBackgroundFit" */;
 			buildPhases = (
+				CD278810875CDBEC6C2CCD56 /* [CP] Check Pods Manifest.lock */,
 				0320F80620A12B240014A2F1 /* Sources */,
 				0320F80720A12B240014A2F1 /* Frameworks */,
 				0320F80820A12B240014A2F1 /* Resources */,
+				37567EB3820C1D8EA43A7973 /* [CP] Embed Pods Frameworks */,
+				AE6C49D9A1AE3F19E5E808D2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -130,12 +163,71 @@
 			files = (
 				037E520320A130DB0086299E /* MainVC.xib in Resources */,
 				0320F81820A12B260014A2F1 /* LaunchScreen.storyboard in Resources */,
+				037E520F20A2D8070086299E /* FinishVC.xib in Resources */,
 				037E520720A13AC70086299E /* EditVC.xib in Resources */,
 				0320F81520A12B260014A2F1 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		37567EB3820C1D8EA43A7973 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-JYImageBackgroundFit/Pods-JYImageBackgroundFit-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/BSGridCollectionViewLayout/BSGridCollectionViewLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/BSImagePicker/BSImagePicker.framework",
+				"${BUILT_PRODUCTS_DIR}/UIImageViewModeScaleAspect/UIImageViewModeScaleAspect.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BSGridCollectionViewLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BSImagePicker.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageViewModeScaleAspect.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JYImageBackgroundFit/Pods-JYImageBackgroundFit-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AE6C49D9A1AE3F19E5E808D2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JYImageBackgroundFit/Pods-JYImageBackgroundFit-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CD278810875CDBEC6C2CCD56 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-JYImageBackgroundFit-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0320F80620A12B240014A2F1 /* Sources */ = {
@@ -145,6 +237,7 @@
 				0320F80E20A12B240014A2F1 /* AppDelegate.swift in Sources */,
 				037E520620A13AC70086299E /* EditVC.swift in Sources */,
 				037E520220A130DB0086299E /* MainVC.swift in Sources */,
+				037E520E20A2D8070086299E /* FinishVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,6 +371,7 @@
 		};
 		0320F81D20A12B260014A2F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3B0841AA180E620AF8555AF0 /* Pods-JYImageBackgroundFit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -297,6 +391,7 @@
 		};
 		0320F81E20A12B260014A2F1 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3542FB3C833EE013781F3A94 /* Pods-JYImageBackgroundFit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

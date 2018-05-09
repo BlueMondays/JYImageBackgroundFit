@@ -7,48 +7,52 @@
 //
 
 import UIKit
+import BSImagePicker
+import Photos
 
-class MainVC: UIViewController, UIImagePickerControllerDelegate,UINavigationControllerDelegate {
+extension PHAsset {
+	func toImage() -> UIImage {
+		var thumbnail = UIImage()
+		
+		let manager = PHImageManager.default()
+		let options = PHImageRequestOptions()
+		options.resizeMode = .exact
+		options.deliveryMode = .highQualityFormat
+		options.isSynchronous = true
+		
+		manager.requestImage(for: self, targetSize: PHImageManagerMaximumSize, contentMode: .aspectFill, options: options, resultHandler: {(result, info)->Void in
+			thumbnail = result!
+		})
+		return thumbnail
+	}
+}
 
-    override func viewDidLoad() {
+class MainVC: UIViewController {
+	
+	override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
 	@IBAction private func onBtnGalleryDidTouchUpInside(_ sender: UIButton) {
-		let picker = UIImagePickerController()
-		picker.delegate = self
-		picker.allowsEditing = false
-		picker.sourceType = .photoLibrary
 		
-		self.present(picker, animated: true, completion: nil)//navigationController?.pushViewController(picker, animated: true)
-	}
-	
-	func imagePickerController(picker: UIImagePickerController!, didFinishPickingImage image: UIImage!, editingInfo: NSDictionary!){
-		self.dismiss(animated: true, completion: { () -> Void in
-			let editVC = EditVC(nibName: "EditVC", bundle: Bundle.main)
-			editVC.images = [image]
+		let picker = BSImagePickerViewController()
+		bs_presentImagePickerController(picker,
+										animated: true,
+										select: { asset in
+		},
+										deselect: { asset in
+		},
+										cancel: { asset in
+											
+		},
+										finish: { asset in
+											let images = asset.map({ $0.toImage() })
+											let editVC = EditVC(nibName: "EditVC", bundle: Bundle.main)
+											editVC.images = images
+											self.navigationController?.pushViewController(editVC, animated: true)
+		},
+										completion: {
+										
 		})
 	}
-	
-	func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-		guard let pickerImage = info[UIImagePickerControllerOriginalImage] as? UIImage else {
-			print("image no : \(info)")
-			return
-		}
-		
-		picker.dismiss(animated: true, completion: { () -> Void in
-			let editVC = EditVC(nibName: "EditVC", bundle: Bundle.main)
-			editVC.images = [pickerImage]
-			self.navigationController?.pushViewController(editVC, animated: true)
-		})
-		
-	}
-
 }
